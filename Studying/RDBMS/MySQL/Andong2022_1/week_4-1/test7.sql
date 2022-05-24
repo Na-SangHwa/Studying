@@ -9,7 +9,7 @@
 --  * 선택적인 정보만 제공 가능
 
 -- [형식]
--- create [or  replace] [force | noforce ] view 뷰이름 [(alias [,alias,.....)]
+-- create [or  replace] [force | noforce ] view  뷰이름 [(alias [,alias,.....)]
 -- as 서브쿼리
 -- [with check option [constraint 제약조건이름]]
 -- [with read only [constraint 제약조건이름]]
@@ -30,37 +30,28 @@
 -- ===================================================================================
 -- ex1) 사원테이블에서 부서가 90인 사원들을 v_view1으로 뷰테이블을 만드시오
 --     (사원ID,사원이름,급여,부서ID만 추가)
-use mydb;
 
-create or replace view v_view1(사원ID,사원이름,급여,부서ID)
-as select employee_id, last_name, salary,department_id
-	from employees
-    where department_id=90;
+
+
 
 show tables;
 select * from v_view1;
 -- -----------------------------------------------------------------------------------
 -- ex2) 사원테이블에서 급여가  5000이상 10000이하인 사원들만 v_view2으로 뷰를 만드시오 --43건
 --    (사원ID , 사원이름, 급여, 부서ID)
-create or replace view v_view2(사원ID,사원이름,급여,부서ID)
-as  select employee_id, last_name, salary, department_id
-    from employees
-    where salary>=5000 and salary<=10000;   
 
-create or replace view v_view2(사원ID,사원이름,급여,부서ID)
-as  select employee_id, last_name, salary, department_id
-    from employees
-    where salary between 5000 and 10000;     
+
+
+
     
 select * from v_view2;   
 -- ------------------------------------------------------------------------------------
 -- ex3) v_view2 테이블에서  103사원의 급여를 9000.00에서 12000.00으로 수정하시오.
-set autocommit=0;
 
-update v_view2 set 급여=12000 where 사원ID=103;
+
 
 select * from v_view2;
-rollback;   -- 원본을 보존하기 위해 rollback
+rollback  -- 원본을 보존하기 위해 rollback
 
 select * from employees where employee_id=103;
 -- ------------------------------------------------------------------------------------
@@ -68,12 +59,9 @@ select * from employees where employee_id=103;
 --     조건1) 부서가 10,90인 사원만 표시하시오
 --     조건2) 타이틀은  사원번호, 이름, 부서이름으로 출력하시오
 --     조건3) 사원번호로 오름차순정렬하시오
-create or replace view v_view3(사원번호, 이름, 부서이름)
-as select employee_id, last_name, department_name
-   from employees
-   left join departments using(department_id)
-   where department_id in(10,90)
-   order by 1 asc;
+
+
+
     
 select * from v_view3;
 show tables;
